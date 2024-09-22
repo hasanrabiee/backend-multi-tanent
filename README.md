@@ -1,66 +1,139 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Brink Multi-Tenant Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A robust, multi-tenant Laravel application that supports separate databases, user authentication, and role-based permissions for different tenants. Additionally, tenants can manage posts, upload images, and define custom rules based on the user's location.
 
-## About Laravel
+## Prerequisites
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Before you begin, ensure you have the following installed on your machine:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   **PHP (>=8.0)**
+-   **MySQL (>=8.0)**
+-   **Composer** (for PHP dependencies)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Technologies Used
 
-## Learning Laravel
+-   **Laravel Framework (v11)**: PHP framework for building scalable and maintainable backends.
+-   **Laravel Sanctum (v4)**: For handling JWT-based authentication.
+-   **stancl/tenancy (v3.8)**: Multi-tenancy package for separating tenant data across databases and subdomains.
+-   **MySQL**: Database engine for handling tenant-specific data.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Features
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Multi-Tenancy
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   Supports separating data per tenant via subdomains or dedicated databases.
+-   Tenant-specific database schemas to ensure complete isolation of data.
 
-## Laravel Sponsors
+### Authentication
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   Allows user registration and login under specific tenants.
+-   Admin roles can be assigned to users with specific permissions for managing tenant resources.
 
-### Premium Partners
+### Post Management
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+-   Tenants can create, edit, and delete posts.
+-   Image uploads for posts are stored in tenant-specific folders.
 
-## Contributing
+### Rules
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   Admins can create specific messages or promotions based on user locations (e.g., show custom messages to users from specific countries).
 
-## Code of Conduct
+## Installation
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Step 1: Clone the Repository
 
-## Security Vulnerabilities
+```bash
+git clone https://github.com/hasanrabiee/backendBrink.git
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Step 2: Install Dependencies
 
-## License
+Use Composer to install PHP dependencies:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+composer install
+```
+
+Install JavaScript dependencies (if applicable):
+
+```bash
+npm install
+# or if you are using Yarn
+yarn install
+```
+
+### Step 3: Environment Setup
+
+Create a copy of `.env` configuration file:
+
+```bash
+cp .env.example .env
+```
+
+Configure your `.env` file with the necessary details such as database connection, mail settings, and tenancy configuration. Here’s an example `.env` setup:
+
+```bash
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=tenant_master_db
+DB_USERNAME=root
+DB_PASSWORD=
+
+TENANCY_DATABASES_CREATE=true
+TENANCY_DATABASES_PREFIX=tenant_
+```
+
+### Step 4: Set Up Database
+
+Create your database(s) and run the following migration command to set up the tables:
+
+```bash
+php artisan migrate
+```
+
+### Step 6: Run the Application
+
+After configuring everything, you can start the development server:
+
+```bash
+php artisan serve
+```
+
+Or, if you are using Docker:
+
+```bash
+docker-compose up
+```
+
+Your application will now be running at `http://localhost:8000`.
+
+## Usage
+
+### Multi-Tenant
+
+-   Tenants are isolated by subdomains or databases, ensuring data separation.
+-   Create tenants with specific databases or subdomains for each.
+
+### Authentication
+
+-   Users can register and log in within their respective tenants.
+-   Admins have special roles for managing tenant resources.
+
+### Post Management
+
+-   Admins can create, edit, and delete posts, which are tenant-specific.
+-   Images uploaded for posts are stored in each tenant's dedicated folder under `storage/tenant*`.
+
+### Rules
+
+-   Admins can create custom messages or promotions based on the user's location (using r profile information).
+
+## API Documentation
+
+Here are some important API endpoints:
+
+-   **POST** `/login`: User login for a tenant.
+-   **POST** `/register`: User registration for a tenant.
+-   **GET** `/posts`: Get all posts for the tenant.
+-   **POST** `/posts`: Create a new post.

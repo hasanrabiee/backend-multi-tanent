@@ -6,6 +6,7 @@ use App\Http\Requests\admin\CreateRuleRequest;
 use App\Models\ContentRule;
 use Illuminate\Http\Request;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Requests\admin\UpdateRuleRequest;
 use Illuminate\Routing\Controllers\Middleware;
 
 class RuleController extends Controller
@@ -69,10 +70,10 @@ class RuleController extends Controller
      * Update the specified resource in storage.
      * Update an existing rule.
      */
-    public function update(Request $request, ContentRule $rule)
+    public function update(UpdateRuleRequest $request, ContentRule $rule)
     {
         // Validate the incoming request data
-        $validatedData = $request->validate();
+        $validatedData = $request->validated();
 
         // Update the rule with the validated data
         $rule->update($validatedData);

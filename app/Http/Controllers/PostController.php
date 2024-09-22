@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Requests\posts\CreatePostRequest;
+use App\Http\Requests\posts\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,17 +72,20 @@ class PostController extends Controller implements HasMiddleware
      * Update the specified resource in storage.
      * Update an existing post.
      */
-    public function update(Request $request, Post $post)
-    {
-        // Validate the incoming request data
-        $validatedData = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'body' => 'sometimes|required|string',
-        ]);
-
+    public function update(UpdatePostRequest $request, Post $post)
+    {   
+       
+        $validatedData = $request->validated();
         // Ensure the authenticated user is the owner of the post
+        
         if ($request->user()->id !== $post->user_id) {
             return response()->json(['message' => 'Unauthorized'], 403); // Forbidden
+        }
+
+        if ($request->hasFile('image')) {
+            // Store the image in the 'public/images' directory and get the path
+            $imagePath = $request->file('image')->store('images', 'public');
+            $validatedData['image_path'] = $imagePath; // Save the image path in the data to be stored
         }
 
         // Update the post
