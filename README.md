@@ -1,4 +1,4 @@
-# Brink Multi-Tenant Application
+#  Multi-Tenant Application
 
 A robust, multi-tenant Laravel application that supports separate databases, user authentication, and role-based permissions for different tenants. Additionally, tenants can manage posts, upload images, and define custom rules based on the user's location.
 
